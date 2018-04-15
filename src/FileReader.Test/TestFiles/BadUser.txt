@@ -1,0 +1,6 @@
+Ward follows Alan
+ Alan  follows  Martin
+Ward follows Martin, Alan
+Martin  follows Test,, 
+This is a malformed line
+ 
