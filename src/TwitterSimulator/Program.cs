@@ -1,30 +1,37 @@
 ﻿using System;
-using System.Reflection;
+using System.IO;
 using Autofac;
-using log4net;
 using TwitterManager.Interfaces;
 
 namespace TwitterSimulator
 {
     class Program
     {    
-
         static void Main(string[] args)
         {
             var container = Configuration.Configure();
             using (var scope = container.BeginLifetimeScope())
             {
                 var tweetManager = scope.Resolve<ITweetManager>();
-                
-                foreach (var user in tweetManager.GetTweetsOrderedByUser())
+
+                try
                 {
-                    Console.WriteLine(user.Key);                    
-                    foreach (var tweet in user.Value)
+                    foreach (var user in tweetManager.GetTweetsOrderedByUser())
                     {
-                        Console.WriteLine(tweet);
-                    }                    
+                        Console.WriteLine(user.Key);
+                        foreach (var tweet in user.Value)
+                        {
+                            Console.WriteLine(tweet);
+                        }
+                    }
                 }
-               Console.ReadLine();
+                catch(FileNotFoundException ex)
+                {
+                    Console.WriteLine(ex);
+                    Console.WriteLine("Application cannot continue");
+                }
+                Console.WriteLine("Press any key to exit");
+                Console.ReadKey();
             }
         }
     }
